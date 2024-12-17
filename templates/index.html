@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mikus</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Mikus</h2>
+    <ul>
+      <li onclick="loadPost('about')">About Me</li>
+      <li onclick="loadPost('posts/post1.md')">Transformer TTS</li>
+      <li onclick="loadPost('posts/post2.md')">Post 2</li>
+      <li onclick="loadPost('posts/post3.md')">Post 3</li>
+    </ul>
+  </div>
+
+  <div class="content">
+    <div id="post-content">
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
