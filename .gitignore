@@ -5,3 +5,4 @@ prompt.py
 directory_structure.txt
 
 .vscode/
+.DS_Store
