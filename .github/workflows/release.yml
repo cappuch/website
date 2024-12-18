@@ -41,7 +41,7 @@ jobs:
           mkdir release_contents
           cp -r * release_contents/ 2>/dev/null || :
           rm -rf release_contents/release
-          powershell Compress-Archive -Path release_contents/* -DestinationPath release/${{ matrix.release_name }}_Release.zip
+          powershell -Command "Compress-Archive -Path 'release_contents\*' -DestinationPath 'release\${{ matrix.release_name }}_Release.zip' -Force"
         else
           mkdir temp_release
           cp -r * temp_release/ 2>/dev/null || :
