@@ -1,0 +1,36 @@
+name: C Project Build
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up GCC
+      uses: egor-tensin/setup-gcc@v1
+      with:
+        version: latest
+        platform: ${{ matrix.os }}
+    
+    - name: Build on Ubuntu/MacOS
+      if: matrix.os != 'windows-latest'
+      run: gcc -o server server.c
+    
+    - name: Build on Windows
+      if: matrix.os == 'windows-latest'
+      run: gcc -o server.exe server.c -lws2_32
+    
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: server-${{ matrix.os }}
+        path: |
+          server${{ matrix.os == 'windows-latest' && '.exe' || '' }}
