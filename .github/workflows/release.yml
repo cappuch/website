@@ -20,7 +20,7 @@ jobs:
           - os: windows-latest
             artifact_name: server.exe
             compile_cmd: gcc -o server.exe server.c -lws2_32
-            zip_cmd: powershell Compress-Archive
+            zip_cmd: Compress-Archive -Path
             release_name: web-server-Windows-AMD64
           - os: macos-latest
             artifact_name: server
@@ -37,9 +37,14 @@ jobs:
       run: ${{ matrix.compile_cmd }}
     
     - name: Prepare Release
+      shell: bash
       run: |
-        mkdir release
-        ${{ matrix.zip_cmd }} release/${{ matrix.release_name }}_Release.zip ${{ matrix.artifact_name }}
+        mkdir -p release
+        if [ "${{ matrix.os }}" == "windows-latest" ]; then
+          powershell Compress-Archive -Path ${{ matrix.artifact_name }} -DestinationPath release/${{ matrix.release_name }}_Release.zip
+        else
+          zip -j release/${{ matrix.release_name }}_Release.zip ${{ matrix.artifact_name }}
+        fi
     
     - name: Upload Release
       env:
