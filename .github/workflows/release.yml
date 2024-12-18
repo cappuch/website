@@ -14,12 +14,15 @@ jobs:
           - os: ubuntu-latest
             artifact_name: server
             release_name: web-server-Linux-x86_64
+            zip_command: zip -j
           - os: windows-latest
             artifact_name: server.exe
             release_name: web-server-Windows-AMD64
+            zip_command: Compress-Archive -DestinationPath
           - os: macos-latest
             artifact_name: server
             release_name: web-server-MacOS-x86_64
+            zip_command: zip -j
         
     runs-on: ${{ matrix.os }}
     
@@ -39,10 +42,17 @@ jobs:
       if: matrix.os == 'windows-latest'
       run: gcc -o ${{ matrix.artifact_name }} server.c -lws2_32
     
-    - name: Zip Artifact
+    - name: Zip Artifact (Unix)
+      if: matrix.os != 'windows-latest'
       run: |
         mkdir -p release
-        zip -j release/${{ matrix.release_name }}_Release.zip ${{ matrix.artifact_name }}
+        ${{ matrix.zip_command }} release/${{ matrix.release_name }}_Release.zip ${{ matrix.artifact_name }}
+    
+    - name: Zip Artifact (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        mkdir -p release
+        Compress-Archive -Path ${{ matrix.artifact_name }} -DestinationPath release/${{ matrix.release_name }}_Release.zip
     
     - name: Upload Release Asset
       env:
