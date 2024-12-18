@@ -28,7 +28,7 @@
 #include <errno.h>
 
 #define PORT 8080
-#define BUFFER_SIZE 4096
+#define BUFFER_SIZE 4096 * 4 * 2 // 32KB
 #define MAX_PATH_LENGTH 256
 
 void handle_client(int client_socket);

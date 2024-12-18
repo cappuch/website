@@ -97,6 +97,7 @@ body {
 #post-content ol {
   margin: var(--spacing-md) 0;
   padding-left: var(--spacing-xl);
+  color: var(--text-secondary);
 }
 
 #post-content li {

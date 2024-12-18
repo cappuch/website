@@ -1,6 +1,6 @@
 # Transformers for IMAGE generation?
 
-If diffusion models are so expensive, why not try to generate images with transformers? 🤔
+If diffusion models are so expensive, why not try to generate images with transformers?
 
 I mean, if [iGPT](https://openai.com/index/image-gpt/) was pretty good, why not? 🤷‍♂
 
