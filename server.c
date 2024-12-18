@@ -4,10 +4,6 @@
 // Simple Web Server (HTTP)                        //
 // 200 lines worth of wasted storage and time      //
 //                                                 //
-//                                                 //
-// Compile with: gcc server.c -o server            //
-// Run with: ./server (if on linux/unix)           //
-//                                                 //
 // MIT License                                     //
 /////////////////////////////////////////////////////
 
@@ -172,24 +168,55 @@ void route_request(int client_socket, const char* path) {
     size_t content_length;
     char* content;
     char* response;
+    char filepath[MAX_PATH_LENGTH];
+    const char* content_type;
 
     if (strcmp(path, "/") == 0 || strcmp(path, "/index.html") == 0) {
         content = serve_file("templates/index.html", "text/html", &content_length);
         response = create_response("200 OK", "text/html", content, content_length);
     }
-    else if (strncmp(path, "/posts/", 7) == 0) {
-        char filepath[MAX_PATH_LENGTH];
-        snprintf(filepath, MAX_PATH_LENGTH, "posts/%s", path + 7);
-        content = serve_file(filepath, "text/plain", &content_length);
-        response = create_response("200 OK", "text/plain", content, content_length);
+    else if (strcmp(path, "/") == 0 || strcmp(path, "/script.js") == 0) {
+        content = serve_file("src/script.js", "application/javascript", &content_length);
+        response = create_response("200 OK", "application/javascript", content, content_length);
     }
-    else if (strcmp(path, "/styles.css") == 0) {
+    else if (strcmp(path, "/") == 0 || strcmp(path, "/styles.css") == 0) {
         content = serve_file("src/styles.css", "text/css", &content_length);
         response = create_response("200 OK", "text/css", content, content_length);
     }
-    else if (strcmp(path, "/script.js") == 0) {
-        content = serve_file("src/script.js", "application/javascript", &content_length);
-        response = create_response("200 OK", "application/javascript", content, content_length);
+    else if (strncmp(path, "/static/", 8) == 0) {
+        const char* clean_path = path + 8;
+        while (strstr(clean_path, "../") != NULL) { // kekw
+            clean_path = strstr(clean_path, "../") + 3;
+        }
+
+        snprintf(filepath, MAX_PATH_LENGTH, "static/%s", clean_path);
+
+        const char* ext = strrchr(filepath, '.');
+        if (ext) {
+            if (strcmp(ext, ".html") == 0) content_type = "text/html";
+            else if (strcmp(ext, ".css") == 0) content_type = "text/css";
+            else if (strcmp(ext, ".js") == 0) content_type = "application/javascript";
+            else if (strcmp(ext, ".png") == 0) content_type = "image/png";
+            else if (strcmp(ext, ".jpg") == 0 || strcmp(ext, ".jpeg") == 0) content_type = "image/jpeg";
+            else if (strcmp(ext, ".gif") == 0) content_type = "image/gif";
+            else if (strcmp(ext, ".svg") == 0) content_type = "image/svg+xml";
+            else if (strcmp(ext, ".ico") == 0) content_type = "image/x-icon";
+            else if (strcmp(ext, ".json") == 0) content_type = "application/json";
+            else if (strcmp(ext, ".wav") == 0) content_type = "audio/wav";
+            else if (strcmp(ext, ".mp3") == 0) content_type = "audio/mpeg";
+            else if (strcmp(ext, ".mp4") == 0) content_type = "video/mp4";
+            else content_type = "application/octet-stream";
+        } else {
+            content_type = "application/octet-stream";
+        }
+
+        content = serve_file(filepath, content_type, &content_length);
+        response = create_response("200 OK", content_type, content, content_length);
+    }
+    else if (strncmp(path, "/posts/", 7) == 0) {
+        snprintf(filepath, MAX_PATH_LENGTH, "posts/%s", path + 7);
+        content = serve_file(filepath, "text/plain", &content_length);
+        response = create_response("200 OK", "text/plain", content, content_length);
     }
     else {
         content = "404 Not Found";
@@ -202,7 +229,7 @@ void route_request(int client_socket, const char* path) {
         free(response);
     }
 
-    if (content && content != "404 Not Found") {
+    if (content && strcmp(content, "404 Not Found") != 0) {
         free(content);
     }
 }

@@ -1,8 +1,11 @@
-http_server
-http_server.exe
+server
+server.exe
 
 prompt.py
 directory_structure.txt
 
 .vscode/
 .DS_Store
+
+.smbdelete*
+server.dSYM/*
