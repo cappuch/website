@@ -9,67 +9,39 @@ permissions:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         include:
           - os: ubuntu-latest
             artifact_name: server
+            compile_cmd: gcc -o server server.c
+            zip_cmd: zip -j
             release_name: web-server-Linux-x86_64
           - os: windows-latest
             artifact_name: server.exe
+            compile_cmd: gcc -o server.exe server.c -lws2_32
+            zip_cmd: powershell Compress-Archive
             release_name: web-server-Windows-AMD64
           - os: macos-latest
             artifact_name: server
+            compile_cmd: clang -arch x86_64 -o server server.c
+            zip_cmd: zip -j
             release_name: web-server-MacOS-x86_64
-
+        
+    runs-on: ${{ matrix.os }}
+    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Prepare build environment
-      shell: bash
-      run: |
-        if [ "${{ matrix.os }}" = "macos-latest" ]; then
-          echo "CC=clang" >> $GITHUB_ENV
-          echo "COMPILE_FLAGS=-arch x86_64" >> $GITHUB_ENV
-        elif [ "${{ matrix.os }}" = "windows-latest" ]; then
-          echo "CC=gcc" >> $GITHUB_ENV
-          echo "COMPILE_FLAGS=-lws2_32" >> $GITHUB_ENV
-        else
-          echo "CC=gcc" >> $GITHUB_ENV
-          echo "COMPILE_FLAGS=" >> $GITHUB_ENV
-        fi
-
+    - uses: actions/checkout@v4
+    
     - name: Compile
-      shell: bash
+      run: ${{ matrix.compile_cmd }}
+    
+    - name: Prepare Release
       run: |
-        $CC $COMPILE_FLAGS -o ${{ matrix.artifact_name }} server.c
-
-    - name: Prepare artifact
-      shell: bash
-      run: |
-        mkdir -p release
-        if [ "${{ matrix.os }}" = "windows-latest" ]; then
-          powershell -Command "Compress-Archive -Path '${{ matrix.artifact_name }}' -DestinationPath 'release/${{ matrix.release_name }}_Release.zip'"
-        else
-          zip -j release/${{ matrix.release_name }}_Release.zip ${{ matrix.artifact_name }}
-        fi
-
-    - name: Upload Release Asset
+        mkdir release
+        ${{ matrix.zip_cmd }} release/${{ matrix.release_name }}_Release.zip ${{ matrix.artifact_name }}
+    
+    - name: Upload Release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      shell: bash
-      run: |
-        gh release upload "${{ github.ref_name }}" release/${{ matrix.release_name }}_Release.zip
-
-  verify-upload:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-    - name: Verify Release Assets
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      shell: bash
-      run: |
-        gh release view "${{ github.ref_name }}" --json assets
+      run: gh release upload "${{ github.ref_name }}" release/${{ matrix.release_name }}_Release.zip
