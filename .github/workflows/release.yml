@@ -1,0 +1,53 @@
+name: Build and Release
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact_name: server
+            release_name: web-server-Linux-x86_64
+          - os: windows-latest
+            artifact_name: server.exe
+            release_name: web-server-Windows-AMD64
+          - os: macos-latest
+            artifact_name: server
+            release_name: web-server-MacOS-x86_64
+        
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Build on Ubuntu
+      if: matrix.os == 'ubuntu-latest'
+      run: gcc -o ${{ matrix.artifact_name }} server.c
+    
+    - name: Build on macOS
+      if: matrix.os == 'macos-latest'
+      run: clang -arch x86_64 -o ${{ matrix.artifact_name }} server.c
+    
+    - name: Build on Windows
+      if: matrix.os == 'windows-latest'
+      run: gcc -o ${{ matrix.artifact_name }} server.c -lws2_32
+    
+    - name: Zip Artifact
+      run: |
+        mkdir -p release
+        zip -j release/${{ matrix.release_name }}_Release.zip ${{ matrix.artifact_name }}
+    
+    - name: Upload Release Assets
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: release/${{ matrix.release_name }}_Release.zip
+        asset_name: ${{ matrix.release_name }}_Release.zip
+        asset_content_type: application/zip
