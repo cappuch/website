@@ -27,7 +27,7 @@
 #include <sys/stat.h>
 #include <errno.h>
 
-#define PORT 8080
+#define PORT 80
 #define BUFFER_SIZE 4096 * 4 * 2 // 32KB
 #define MAX_PATH_LENGTH 256
 
