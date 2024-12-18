@@ -8,7 +8,7 @@ Reflections can be calculated in a single line, with the most expensive part of 
 `vector - 2 * dot(vector, normal) * normal`
 
 Rays are literal raycasts with a direction and a starting point. They can be represented as a line, but are more commonly represented as a starting point and a direction.
-```
+```python
 def trace_ray(ray, objects, light, depth=3):
     if depth <= 0:
         return np.zeros(3)
@@ -71,7 +71,7 @@ We can disembowel this function into a few parts:
 ## The Scene
 The scene is a list of objects and a light source. The objects are defined by their intersection function and their normal function. The light source is a point in space.
 
-```
+```python
 objects = [
     Sphere([0, 0, -5], 1, [1, 0, 0]),
     Cube([-1.5, -1, -3], [-0.5, 0, -2], [0, 1, 0]),
@@ -81,7 +81,7 @@ objects = [
 
 The objects are easy enough to design, with the code looking like:
 
-```
+```python
 class Sphere:
     def __init__(self, center, radius, color, specular=50, reflective=0.1):
         self.center = np.array(center)
@@ -176,7 +176,7 @@ class Checkerboard:
 
 To explain the code line by line, let's take a higher level look at what each class is doing:
 
-```
+```python
 class Sphere:
     def __init__(self, center, radius, color, specular=50, reflective=0.1):
         self.center = np.array(center)
@@ -188,7 +188,7 @@ class Sphere:
 
 The `__init__` contains all of the things that define the actual shape.
 
-```
+```python
     def intersect(self, ray):
         oc = ray.origin - self.center
 
@@ -212,7 +212,7 @@ The `__init__` contains all of the things that define the actual shape.
 
 The `intersect` function is the function that determines if a ray intersects with the object. It returns the distance from the ray origin to the hit point.
 
-```
+```python
     def normal(self, point):
         return (point - self.center) / self.radius
 ```

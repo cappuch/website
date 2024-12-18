@@ -20,7 +20,7 @@ I used NumPy to handle the data. NumPy is a great library for handling large arr
 ### Matrix Multiplication
 Matrix multiplication is the most common operation in machine learning. It's also the most expensive. I wrote a kernel to multiply two matrices together. It's simple, but it's fast enough for my needs.
 
-```
+```cl
 __kernel void matmul(
     __global const float* A,
     __global const float* B,
@@ -52,7 +52,7 @@ ReLU is the most common activation function in deep learning. It's simple, and i
 
 ReLU is a simple function that returns x if x > 0, and 0 otherwise. It's primarily used to introduce non-linearity into the model.
 
-```
+```cl
 __kernel void relu(
     __global const float* input,
     __global float* output,
@@ -67,7 +67,7 @@ __kernel void relu(
 
 I also wrote a kernel to calculate the derivative of the ReLU function. The derivative of ReLU is 1 if x > 0, and 0 otherwise. It's used in backpropagation to calculate the gradients.
 
-```
+```cl
 __kernel void relu_backward(
     __global const float* input,
     __global const float* grad_output,
@@ -85,7 +85,7 @@ __kernel void relu_backward(
 
 I also wrote a kernel to calculate the mean squared error between two arrays. MSE is a common loss function used in regression problems. (Like LLMs)
 
-```
+```cl
 __kernel void mse(
     __global const float* pred,
     __global const float* target,

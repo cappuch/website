@@ -3,15 +3,15 @@
   --sidebar-bg: #1a1a1a;
   --hover-bg: #2a2a2a;
   --code-bg: #2d2d2d;
-  --accent-color: #4f46e5;
-  --text-primary: #ffffff;
+  --accent: #4f46e5;
+  --text-primary: #fff;
   --text-secondary: #a0a0a0;
-  --spacing-sm: 0.5rem;
-  --spacing-md: 1rem;
-  --spacing-lg: 1.5rem;
-  --spacing-xl: 2rem;
-  --border-radius: 8px;
-  --transition: all 0.3s ease;
+  --sp-sm: .5rem;
+  --sp-md: 1rem;
+  --sp-lg: 1.5rem;
+  --sp-xl: 2rem;
+  --radius: 8px;
+  --trans: .3s ease;
 }
 
 * {
@@ -23,53 +23,48 @@
 body {
   display: flex;
   min-height: 100vh;
-  background-color: var(--primary-bg);
+  background: var(--primary-bg);
   color: var(--text-primary);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  line-height: 1.6;
+  font: 1rem/1.6 'Inter',-apple-system,sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
 .sidebar {
-  width: 280px;
-  background-color: var(--sidebar-bg);
-  padding: var(--spacing-lg);
-  overflow-y: auto;
   position: sticky;
   top: 0;
+  width: 280px;
   height: 100vh;
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--sidebar-bg);
+  padding: var(--sp-lg);
+  overflow-y: auto;
+  border-right: 1px solid rgba(255,255,255,.1);
 }
 
 .sidebar h2 {
-  margin-bottom: var(--spacing-lg);
-  font-size: 1.25rem;
-  font-weight: 600;
-  letter-spacing: -0.025em;
-}
-
-.sidebar ul {
-  list-style: none;
+  margin-bottom: var(--sp-lg);
+  font: 600 1.25rem/1.3 sans-serif;
+  letter-spacing: -.025em;
 }
 
 .sidebar li {
-  padding: var(--spacing-md);
-  margin-bottom: var(--spacing-sm);
-  border-radius: var(--border-radius);
-  transition: var(--transition);
-  font-size: 0.95rem;
+  padding: var(--sp-md);
+  margin-bottom: var(--sp-sm);
+  border-radius: var(--radius);
+  font-size: .95rem;
+  transition: var(--trans);
+  list-style: none;
 }
 
 .sidebar li:hover {
-  background-color: var(--hover-bg);
+  background: var(--hover-bg);
   transform: translateX(4px);
 }
 
 .content {
-  flex-grow: 1;
-  padding: var(--spacing-xl);
+  flex: 1;
   max-width: 75%;
   margin: 0 auto;
+  padding: var(--sp-xl);
 }
 
 #post-content {
@@ -82,67 +77,122 @@ body {
 #post-content h4,
 #post-content h5,
 #post-content h6 {
-  margin: var(--spacing-xl) 0 var(--spacing-md);
+  margin: var(--sp-xl) 0 var(--sp-md);
   line-height: 1.3;
   font-weight: 600;
-  letter-spacing: -0.025em;
+  letter-spacing: -.025em;
 }
 
 #post-content p {
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--sp-md);
   color: var(--text-secondary);
 }
 
 #post-content ul,
 #post-content ol {
-  margin: var(--spacing-md) 0;
-  padding-left: var(--spacing-xl);
+  margin: var(--sp-md) 0;
+  padding-left: var(--sp-xl);
   color: var(--text-secondary);
 }
 
 #post-content li {
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--sp-sm);
 }
 
 #post-content blockquote {
-  margin: var(--spacing-lg) 0;
-  padding: var(--spacing-md) var(--spacing-lg);
-  border-left: 4px solid var(--accent-color);
-  background-color: var(--sidebar-bg);
-  border-radius: var(--border-radius);
+  margin: var(--sp-lg) 0;
+  padding: var(--sp-md) var(--sp-lg);
+  border-left: 4px solid var(--accent);
+  background: var(--sidebar-bg);
+  border-radius: var(--radius);
 }
 
 #post-content pre {
-  background-color: var(--code-bg);
-  padding: var(--spacing-lg);
-  border-radius: var(--border-radius);
-  margin: var(--spacing-md) 0;
+  background: var(--code-bg);
+  padding: var(--sp-lg);
+  margin: var(--sp-md) 0;
+  border-radius: var(--radius);
   overflow-x: auto;
 }
 
 #post-content code {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.9em;
-  background-color: var(--code-bg);
+  font: .9em ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 
+        'Liberation Mono', 'Courier New', monospace;
+  background: var(--code-bg);
   border-radius: 4px;
+}
+
+.code-wrapper {
+  position: relative;
+  margin: var(--sp-md) 0;
+}
+
+.code-header {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-sm);
+  padding: var(--sp-sm) var(--sp-md);
+  background: var(--code-bg);
+  border-radius: var(--radius);
+}
+
+.code-wrapper pre {
+  margin: 0;
+  border-radius: 0 0 var(--radius) var(--radius);
+  max-height: 1000px;
+  opacity: 1;
+  transition: max-height 0.3s ease-in-out, opacity 0.2s ease-in-out;
+  overflow: hidden;
+}
+
+.code-wrapper.collapsed pre {
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.3s ease-in-out, opacity 0.2s ease-in-out;
+}
+
+.code-button {
+  background: var(--accent);
+  color: var(--text-primary);
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: var(--trans);
+}
+
+.code-button:hover {
+  opacity: 0.9;
+}
+
+.collapse-button::before {
+  content: '▼';
+  display: inline-block;
+  margin-right: 4px;
+  transition: var(--trans);
+}
+
+.collapsed .collapse-button::before {
+  transform: rotate(-90deg);
 }
 
 #post-content img {
   max-width: 100%;
   height: auto;
-  margin: var(--spacing-md) 0;
-  border-radius: var(--border-radius);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  margin: var(--sp-md) 0;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,.1);
 }
 
 #post-content a {
-  color: var(--accent-color);
+  color: var(--accent);
   text-decoration: none;
-  transition: var(--transition);
+  transition: var(--trans);
 }
 
 #post-content a:hover {
-  opacity: 0.8;
+  opacity: .8;
 }
 
 @media (max-width: 768px) {
@@ -151,6 +201,53 @@ body {
   }
   
   .content {
-    padding: var(--spacing-md);
+    padding: var(--sp-md);
   }
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  margin: auto;
+  display: block;
+  width: 65%;
+  max-height: 90vh;
+  object-fit: contain;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.modal-close {
+  position: absolute;
+  right: 35px;
+  top: 15px;
+  color: var(--text-primary);
+  font-size: 40px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: var(--trans);
+}
+
+.modal-close:hover {
+  color: var(--accent);
+}
+
+#post-content img {
+  cursor: pointer;
+  transition: var(--trans);
+}
+
+#post-content img:hover {
+  opacity: 0.3;
 }

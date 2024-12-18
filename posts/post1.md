@@ -8,7 +8,7 @@ So, my initial idea was to 'reverse' the architecture of ViT-like models.
 
 First off, let's do some image-preprocessing steps. 
 
-```
+```python
 class PixelQuantizer:
     def __init__(self, num_bins=16, device=None):
         self.num_bins = num_bins
@@ -26,7 +26,7 @@ Yeah. That's an pixel quantizer. It's just helpful for making the image data eas
 
 What about some patches? (arggh... i'm a pirate now)
 
-```
+```python
 class Patchifier:
     def __init__(self, patch_size):
         self.patch_size = patch_size
@@ -43,7 +43,7 @@ Simple enough!
 
 Finally, let's define the model.
 
-```
+```python
 class ImageTransformer(nn.Module):
     def __init__(self, image_size, patch_size, num_bins, dim, num_heads, num_layers):
         super().__init__()

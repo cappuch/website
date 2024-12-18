@@ -6,23 +6,27 @@
   <title>Mikus</title>
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="sidebar">
     <h2>Mikus's Projects</h2>
-    <ul>
+    <a>
       <li onclick="loadPost('about')">About Me</li>
       <li onclick="loadPost('posts/post1.md')">Transformers for Images</li>
       <li onclick="loadPost('posts/post2.md')">Python Raytracing</li>
       <li onclick="loadPost('posts/post3.md')">GPU Accelerated ML Library</li>
       <li onclick="loadPost('posts/post4.md')">8 Bit CPU and Assembler</li>
-    </ul>
+    </a>
   </div>
 
   <div class="content">
     <div id="post-content">
     </div>
+  </div>
+
+  <div id="imageModal" class="modal">
+    <span class="modal-close">&times;</span>
+    <img class="modal-content" id="modalImage">
   </div>
 
   <script src="script.js"></script>

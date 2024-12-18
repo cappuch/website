@@ -33,7 +33,7 @@ The assembler supports two instruction sets:
 The assembler actually supports directives to select the mode between CPU and GPU instructions. The directives are `.CPU` and `.GPU`. The assembler will only assemble instructions that are in the selected mode.
 
 ### Example Assembly Code
-```
+```assembly
 .CPU
 START: LDA 0x10
        ADD 0x20
@@ -85,7 +85,7 @@ I'm terrible at names. Best name I could have come up with at the time. It's sim
 It's very, very basic.
 
 For example, here's a test program:
-```
+```luaython
 compute
     var x = 5
     var y = 10
@@ -100,7 +100,7 @@ draw
 ```
 
 This directly translates to the following assembly code:
-```
+```assembly
 .CPU
 LDA 5
 STA 20
@@ -117,7 +117,7 @@ RECT 20 30
 GHALT
 ```
 Which is then assembled into the following machine code:
-```
+```machine code
 0x01
 0x05
 0x04
