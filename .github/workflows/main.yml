@@ -1,4 +1,4 @@
-name: C Project Build
+name: Build Multiplatform
 
 on: [push, pull_request]
 
