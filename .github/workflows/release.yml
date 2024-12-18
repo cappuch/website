@@ -15,15 +15,15 @@ jobs:
           - os: ubuntu-latest
             artifact_name: server
             compile_cmd: gcc -o server server.c
-            release_name: web-server-Linux-x86_64
+            release_name: website-Linux-x86_64
           - os: windows-latest
             artifact_name: server.exe
             compile_cmd: gcc -o server.exe server.c -lws2_32
-            release_name: web-server-Windows-AMD64
+            release_name: website-Windows-AMD64
           - os: macos-latest
             artifact_name: server
             compile_cmd: clang -arch x86_64 -o server server.c
-            release_name: web-server-MacOS-x86_64
+            release_name: website-MacOS-x86_64
         
     runs-on: ${{ matrix.os }}
     
