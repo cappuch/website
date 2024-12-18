@@ -1,4 +1,4 @@
-name: Build and Release
+name: Release
 
 on:
   release:
@@ -15,17 +15,14 @@ jobs:
           - os: ubuntu-latest
             artifact_name: server
             compile_cmd: gcc -o server server.c
-            zip_cmd: zip -j
             release_name: web-server-Linux-x86_64
           - os: windows-latest
             artifact_name: server.exe
             compile_cmd: gcc -o server.exe server.c -lws2_32
-            zip_cmd: Compress-Archive -Path
             release_name: web-server-Windows-AMD64
           - os: macos-latest
             artifact_name: server
             compile_cmd: clang -arch x86_64 -o server server.c
-            zip_cmd: zip -j
             release_name: web-server-MacOS-x86_64
         
     runs-on: ${{ matrix.os }}
@@ -41,9 +38,16 @@ jobs:
       run: |
         mkdir -p release
         if [ "${{ matrix.os }}" == "windows-latest" ]; then
-          powershell Compress-Archive -Path ${{ matrix.artifact_name }} -DestinationPath release/${{ matrix.release_name }}_Release.zip
+          mkdir release_contents
+          cp -r * release_contents/ 2>/dev/null || :
+          rm -rf release_contents/release
+          powershell Compress-Archive -Path release_contents/* -DestinationPath release/${{ matrix.release_name }}_Release.zip
         else
-          zip -j release/${{ matrix.release_name }}_Release.zip ${{ matrix.artifact_name }}
+          mkdir temp_release
+          cp -r * temp_release/ 2>/dev/null || :
+          rm -rf temp_release/release
+          cd temp_release && zip -r ../release/${{ matrix.release_name }}_Release.zip . && cd ..
+          rm -rf temp_release
         fi
     
     - name: Upload Release
