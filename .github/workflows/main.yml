@@ -20,7 +20,7 @@ jobs:
     
     - name: Build on macOS
       if: matrix.os == 'macos-latest'
-      run: clang -o server server.c
+      run: clang -arch x86_64 -o server server.c
     
     - name: Build on Windows
       if: matrix.os == 'windows-latest'
