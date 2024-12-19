@@ -16,7 +16,7 @@ Here’s the best part: each card costs only about 20 euros. The downside? Shipp
 
 Let’s talk numbers. Here’s how the P104-100s stack up in real-world AI tasks:
 
-- **SD-XL:** 2.52 iterations per second
+- **SD-2:** 2.52 iterations per second
 - **Qwen 2 7B Coder (Q8):** 18.75 tokens per second
 - **Qwen 2 13B Coder (Q6):** 12.5 tokens per second
 - **Qwen 2 13B Coder (Q8):** 7 tokens per second
