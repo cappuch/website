@@ -225,6 +225,6 @@ So, each class has 3 functions.
 ## The Result
 The result:
 
-![https://i.imgur.com/rX2WZOh.png](https://i.imgur.com/rX2WZOh.png)
+<img src="https://i.imgur.com/rX2WZOh.png" alt="https://i.imgur.com/rX2WZOh.png" width="500"/>
 
 The performance of this code is not great, but it's a good starting point for understanding raytracing (especially in Python).
